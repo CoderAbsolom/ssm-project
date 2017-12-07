@@ -1,3 +1,3 @@
 # ssm-project
-> A base project who has been build with Spring+SpringMVC+MyBatis.
+> A base project who has been buil with Spring+SpringMVC+MyBatis.
 
