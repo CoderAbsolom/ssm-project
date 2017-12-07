@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.absolom.dracarys.user.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.absolom.dracarys.user.model.User" >
+    <id column="UserID" property="userID" jdbcType="VARCHAR" />
+    <result column="LoginName" property="loginName" jdbcType="VARCHAR" />
+    <result column="OrgCode" property="orgCode" jdbcType="VARCHAR" />
+    <result column="Password" property="password" jdbcType="VARCHAR" />
+    <result column="LoginIP" property="loginIP" jdbcType="VARCHAR" />
+    <result column="UserType" property="userType" jdbcType="VARCHAR" />
+    <result column="Memo" property="memo" jdbcType="VARCHAR" />
+    <result column="UserName" property="userName" jdbcType="VARCHAR" />
+    <result column="CreateBy" property="createBy" jdbcType="VARCHAR" />
+    <result column="CreateDate" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="UpdateBy" property="updateBy" jdbcType="VARCHAR" />
+    <result column="UpdateDate" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="EnabledFlag" property="enabledFlag" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    UserID, LoginName, OrgCode, Password, LoginIP, UserType, Memo, UserName, CreateBy, 
+    CreateDate, UpdateBy, UpdateDate, EnabledFlag
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_user
+    where UserID = #{userID,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_user
+    where UserID = #{userID,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.absolom.dracarys.user.model.User" >
+    insert into sys_user (UserID, LoginName, OrgCode, 
+      Password, LoginIP, UserType, 
+      Memo, UserName, CreateBy, 
+      CreateDate, UpdateBy, UpdateDate, 
+      EnabledFlag)
+    values (#{userID,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR}, #{orgCode,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{loginIP,jdbcType=VARCHAR}, #{userType,jdbcType=VARCHAR}, 
+      #{memo,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{enabledFlag,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.absolom.dracarys.user.model.User" >
+    insert into sys_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userID != null" >
+        UserID,
+      </if>
+      <if test="loginName != null" >
+        LoginName,
+      </if>
+      <if test="orgCode != null" >
+        OrgCode,
+      </if>
+      <if test="password != null" >
+        Password,
+      </if>
+      <if test="loginIP != null" >
+        LoginIP,
+      </if>
+      <if test="userType != null" >
+        UserType,
+      </if>
+      <if test="memo != null" >
+        Memo,
+      </if>
+      <if test="userName != null" >
+        UserName,
+      </if>
+      <if test="createBy != null" >
+        CreateBy,
+      </if>
+      <if test="createDate != null" >
+        CreateDate,
+      </if>
+      <if test="updateBy != null" >
+        UpdateBy,
+      </if>
+      <if test="updateDate != null" >
+        UpdateDate,
+      </if>
+      <if test="enabledFlag != null" >
+        EnabledFlag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userID != null" >
+        #{userID,jdbcType=VARCHAR},
+      </if>
+      <if test="loginName != null" >
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null" >
+        #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="loginIP != null" >
+        #{loginIP,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enabledFlag != null" >
+        #{enabledFlag,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.absolom.dracarys.user.model.User" >
+    update sys_user
+    <set >
+      <if test="loginName != null" >
+        LoginName = #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null" >
+        OrgCode = #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        Password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="loginIP != null" >
+        LoginIP = #{loginIP,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null" >
+        UserType = #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        Memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        UserName = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        CreateBy = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        CreateDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        UpdateBy = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        UpdateDate = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enabledFlag != null" >
+        EnabledFlag = #{enabledFlag,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where UserID = #{userID,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.absolom.dracarys.user.model.User" >
+    update sys_user
+    set LoginName = #{loginName,jdbcType=VARCHAR},
+      OrgCode = #{orgCode,jdbcType=VARCHAR},
+      Password = #{password,jdbcType=VARCHAR},
+      LoginIP = #{loginIP,jdbcType=VARCHAR},
+      UserType = #{userType,jdbcType=VARCHAR},
+      Memo = #{memo,jdbcType=VARCHAR},
+      UserName = #{userName,jdbcType=VARCHAR},
+      CreateBy = #{createBy,jdbcType=VARCHAR},
+      CreateDate = #{createDate,jdbcType=TIMESTAMP},
+      UpdateBy = #{updateBy,jdbcType=VARCHAR},
+      UpdateDate = #{updateDate,jdbcType=TIMESTAMP},
+      EnabledFlag = #{enabledFlag,jdbcType=VARCHAR}
+    where UserID = #{userID,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.absolom.dracarys.log.dao.SysLogMapper" >
+  <resultMap id="BaseResultMap" type="com.absolom.dracarys.log.model.SysLog" >
+    <id column="LogID" property="logID" jdbcType="VARCHAR" />
+    <result column="AppName" property="appName" jdbcType="VARCHAR" />
+    <result column="LogType" property="logType" jdbcType="INTEGER" />
+    <result column="UserID" property="userID" jdbcType="VARCHAR" />
+    <result column="operation" property="operation" jdbcType="VARCHAR" />
+    <result column="MethodName" property="methodName" jdbcType="VARCHAR" />
+    <result column="RequestMethod" property="requestMethod" jdbcType="VARCHAR" />
+    <result column="RequestParams" property="requestParams" jdbcType="VARCHAR" />
+    <result column="RequestIp" property="requestIp" jdbcType="VARCHAR" />
+    <result column="RequestUri" property="requestUri" jdbcType="VARCHAR" />
+    <result column="ExceptionCode" property="exceptionCode" jdbcType="VARCHAR" />
+    <result column="ExceptionDetail" property="exceptionDetail" jdbcType="VARCHAR" />
+    <result column="TimeConsuming" property="timeConsuming" jdbcType="BIGINT" />
+    <result column="UserAgent" property="userAgent" jdbcType="VARCHAR" />
+    <result column="CreateDate" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="ModifyTime" property="modifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    LogID, AppName, LogType, UserID, operation, MethodName, RequestMethod, RequestParams, 
+    RequestIp, RequestUri, ExceptionCode, ExceptionDetail, TimeConsuming, UserAgent, 
+    CreateDate, ModifyTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_log
+    where LogID = #{logID,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_log
+    where LogID = #{logID,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.absolom.dracarys.log.model.SysLog" >
+    insert into sys_log (LogID, AppName, LogType, 
+      UserID, operation, MethodName, 
+      RequestMethod, RequestParams, RequestIp, 
+      RequestUri, ExceptionCode, ExceptionDetail, 
+      TimeConsuming, UserAgent, CreateDate,
+      ModifyTime)
+    values (#{logID,jdbcType=VARCHAR}, #{appName,jdbcType=VARCHAR}, #{logType,jdbcType=INTEGER}, 
+      #{userID,jdbcType=VARCHAR}, #{operation,jdbcType=VARCHAR}, #{methodName,jdbcType=VARCHAR}, 
+      #{requestMethod,jdbcType=VARCHAR}, #{requestParams,jdbcType=VARCHAR}, #{requestIp,jdbcType=VARCHAR}, 
+      #{requestUri,jdbcType=VARCHAR}, #{exceptionCode,jdbcType=VARCHAR}, #{exceptionDetail,jdbcType=VARCHAR}, 
+      #{timeConsuming,jdbcType=BIGINT}, #{userAgent,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+      #{modifyTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.absolom.dracarys.log.model.SysLog" >
+    insert into sys_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="logID != null" >
+        LogID,
+      </if>
+      <if test="appName != null" >
+        AppName,
+      </if>
+      <if test="logType != null" >
+        LogType,
+      </if>
+      <if test="userID != null" >
+        UserID,
+      </if>
+      <if test="operation != null" >
+        operation,
+      </if>
+      <if test="methodName != null" >
+        MethodName,
+      </if>
+      <if test="requestMethod != null" >
+        RequestMethod,
+      </if>
+      <if test="requestParams != null" >
+        RequestParams,
+      </if>
+      <if test="requestIp != null" >
+        RequestIp,
+      </if>
+      <if test="requestUri != null" >
+        RequestUri,
+      </if>
+      <if test="exceptionCode != null" >
+        ExceptionCode,
+      </if>
+      <if test="exceptionDetail != null" >
+        ExceptionDetail,
+      </if>
+      <if test="timeConsuming != null" >
+        TimeConsuming,
+      </if>
+      <if test="userAgent != null" >
+        UserAgent,
+      </if>
+      <if test="createDate != null" >
+        CreateDate,
+      </if>
+      <if test="modifyTime != null" >
+        ModifyTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="logID != null" >
+        #{logID,jdbcType=VARCHAR},
+      </if>
+      <if test="appName != null" >
+        #{appName,jdbcType=VARCHAR},
+      </if>
+      <if test="logType != null" >
+        #{logType,jdbcType=INTEGER},
+      </if>
+      <if test="userID != null" >
+        #{userID,jdbcType=VARCHAR},
+      </if>
+      <if test="operation != null" >
+        #{operation,jdbcType=VARCHAR},
+      </if>
+      <if test="methodName != null" >
+        #{methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="requestMethod != null" >
+        #{requestMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="requestParams != null" >
+        #{requestParams,jdbcType=VARCHAR},
+      </if>
+      <if test="requestIp != null" >
+        #{requestIp,jdbcType=VARCHAR},
+      </if>
+      <if test="requestUri != null" >
+        #{requestUri,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionCode != null" >
+        #{exceptionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionDetail != null" >
+        #{exceptionDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="timeConsuming != null" >
+        #{timeConsuming,jdbcType=BIGINT},
+      </if>
+      <if test="userAgent != null" >
+        #{userAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.absolom.dracarys.log.model.SysLog" >
+    update sys_log
+    <set >
+      <if test="appName != null" >
+        AppName = #{appName,jdbcType=VARCHAR},
+      </if>
+      <if test="logType != null" >
+        LogType = #{logType,jdbcType=INTEGER},
+      </if>
+      <if test="userID != null" >
+        UserID = #{userID,jdbcType=VARCHAR},
+      </if>
+      <if test="operation != null" >
+        operation = #{operation,jdbcType=VARCHAR},
+      </if>
+      <if test="methodName != null" >
+        MethodName = #{methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="requestMethod != null" >
+        RequestMethod = #{requestMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="requestParams != null" >
+        RequestParams = #{requestParams,jdbcType=VARCHAR},
+      </if>
+      <if test="requestIp != null" >
+        RequestIp = #{requestIp,jdbcType=VARCHAR},
+      </if>
+      <if test="requestUri != null" >
+        RequestUri = #{requestUri,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionCode != null" >
+        ExceptionCode = #{exceptionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionDetail != null" >
+        ExceptionDetail = #{exceptionDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="timeConsuming != null" >
+        TimeConsuming = #{timeConsuming,jdbcType=BIGINT},
+      </if>
+      <if test="userAgent != null" >
+        UserAgent = #{userAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        CreateDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        ModifyTime = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where LogID = #{logID,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.absolom.dracarys.log.model.SysLog" >
+    update sys_log
+    set AppName = #{appName,jdbcType=VARCHAR},
+      LogType = #{logType,jdbcType=INTEGER},
+      UserID = #{userID,jdbcType=VARCHAR},
+      operation = #{operation,jdbcType=VARCHAR},
+      MethodName = #{methodName,jdbcType=VARCHAR},
+      RequestMethod = #{requestMethod,jdbcType=VARCHAR},
+      RequestParams = #{requestParams,jdbcType=VARCHAR},
+      RequestIp = #{requestIp,jdbcType=VARCHAR},
+      RequestUri = #{requestUri,jdbcType=VARCHAR},
+      ExceptionCode = #{exceptionCode,jdbcType=VARCHAR},
+      ExceptionDetail = #{exceptionDetail,jdbcType=VARCHAR},
+      TimeConsuming = #{timeConsuming,jdbcType=BIGINT},
+      UserAgent = #{userAgent,jdbcType=VARCHAR},
+      CreateDate = #{createDate,jdbcType=TIMESTAMP},
+      ModifyTime = #{modifyTime,jdbcType=TIMESTAMP}
+    where LogID = #{logID,jdbcType=VARCHAR}
+  </update>
+</mapper>
