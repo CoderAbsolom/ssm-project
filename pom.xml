@@ -25,12 +25,15 @@
         <!-- mybatis版本号 -->
         <mybatis.version>3.4.1</mybatis.version>
         <!-- 正则表达式验证 -->
-        <hutool-version>2.16.0</hutool-version>
+        <hutool.version>2.16.0</hutool.version>
         <!-- 数据库连接池 -->
-        <druid-version>1.0.28</druid-version>
+        <druid.version>1.0.28</druid.version>
         <!-- Apache Common -->
-        <commons-lang-version>2.6</commons-lang-version>
-        <commons-io-version>2.5</commons-io-version>
+        <commons.lang.version>2.6</commons.lang.version>
+        <commons.io.version>2.5</commons.io.version>
+        <!-- Redis数据库 -->
+        <redis.client>2.9.0</redis.client>
+        <spring.data.redis>2.0.2.RELEASE</spring.data.redis>
     </properties>
 
     <!-- 阿里云maven仓库 -->
@@ -112,26 +115,40 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
-            <version>${druid-version}</version>
+            <version>${druid.version}</version>
+        </dependency>
+
+        <!-- spring-redis实现 -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>${spring.data.redis}</version>
+        </dependency>
+
+        <!-- redis客户端jar -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${redis.client}</version>
         </dependency>
 
         <!-- 正则表达式验证 -->
         <dependency>
             <groupId>com.xiaoleilu</groupId>
             <artifactId>hutool</artifactId>
-            <version>${hutool-version}</version>
+            <version>${hutool.version}</version>
         </dependency>
 
         <!-- Apache Common -->
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
-            <version>${commons-lang-version}</version>
+            <version>${commons.lang.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>${commons-io-version}</version>
+            <version>${commons.io.version}</version>
         </dependency>
 
         <!-- MyBatis -->

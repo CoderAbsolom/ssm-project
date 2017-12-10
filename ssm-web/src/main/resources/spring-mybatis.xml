@@ -4,6 +4,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
@@ -17,49 +18,58 @@
     <context:component-scan base-package="com.absolom.dracarys"/>
 
     <!-- 配置数据库相关参数properties的属性：${url} -->
-    <context:property-placeholder location="classpath:db.properties"/>
+    <context:property-placeholder location="classpath:db.properties,classpath:redis.properties"/>
 
-    <!-- 数据库连接池 -->
-    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
-        init-method="init" destroy-method="close">
-        <property name="url">
-            <value>${jdbc.url}</value>
-        </property>
-        <property name="username">
-            <value>${jdbc.username}</value>
-        </property>
-        <property name="password">
-            <value>${jdbc.password}</value>
-        </property>
-        <property name="initialSize">
-            <value>${jdbc.initialSize}</value>
-        </property>
-        <property name="maxActive">
-            <value>${jdbc.maxActive}</value>
-        </property>
+    <!-- Redis数据库连接池 -->
+    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig"
+        p:maxIdle="${redis.maxIdle}"
+        p:maxTotal="${redis.maxActive}"
+        p:maxWaitMillis="${redis.maxWait}"
+        p:testOnBorrow="${redis.testOnBorrow}">
+    </bean>
+
+    <!-- Spring-redis连接池管理工厂 -->
+    <bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          p:host-name="${redis.host}"
+          p:port="${redis.port}"
+          p:password="${redis.pass}"
+          p:pool-config-ref="poolConfig" />
+
+    <!-- 使用中间类解决RedisCache.jedisConnectionFactory的静态注入，从而使MyBatis实现第三方缓存 -->
+    <bean id="redisCacheTransfer" class="com.nuo.cache.RedisCacheTransfer">
+        <property name="redisConnectionFactory" ref="redisConnectionFactory" />
+    </bean>
+
+    <!-- MySQL数据库连接池 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"
+        p:url="${jdbc.url}"
+        p:username="${jdbc.username}"
+        p:password="${jdbc.password}"
+        p:initialSize="${jdbc.initialSize}"
+        p:maxActive="${jdbc.maxActive}">
         <property name="proxyFilters">
             <list>
-                <ref bean="stat-filter" />
-                <ref bean="wall-filter" />
+                <ref bean="stat-filter"/>
+                <ref bean="wall-filter"/>
             </list>
         </property>
     </bean>
 
     <!--慢SQL记录-->
     <bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
-        <property name="slowSqlMillis" value="1000" />
-        <property name="logSlowSql" value="true" />
-        <property name="mergeSql" value="true" />
+        <property name="slowSqlMillis" value="1000"/>
+        <property name="logSlowSql" value="true"/>
+        <property name="mergeSql" value="true"/>
     </bean>
 
     <!--统计的SQL执行时间-->
     <bean id="wall-filter" class="com.alibaba.druid.wall.WallFilter">
-        <property name="dbType" value="mysql" />
-        <property name="config" ref="wall-filter-config" />
+        <property name="dbType" value="mysql"/>
+        <property name="config" ref="wall-filter-config"/>
     </bean>
 
     <bean id="wall-filter-config" class="com.alibaba.druid.wall.WallConfig">
-        <property name="multiStatementAllow" value="true" />
+        <property name="multiStatementAllow" value="true"/>
     </bean>
 
     <bean id="druid-stat-interceptor" class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor"/>
@@ -67,10 +77,10 @@
     <bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut" scope="prototype">
         <property name="patterns">
             <list>
-                <value> com.absolom.dracarys.controller.*</value>
-                <value> com.absolom.dracarys.service.*</value>
-                <value> com.absolom.dracarys.*.controller.*</value>
-                <value> com.absolom.dracarys.*.service.*</value>
+                <value>com.absolom.dracarys.controller.*</value>
+                <value>com.absolom.dracarys.service.*</value>
+                <value>com.absolom.dracarys.*.controller.*</value>
+                <value>com.absolom.dracarys.*.service.*</value>
             </list>
         </property>
     </bean>
