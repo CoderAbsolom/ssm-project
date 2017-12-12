@@ -5,7 +5,6 @@ import com.absolom.dracarys.log.model.SysLog;
 import com.absolom.dracarys.log.service.SysLogServiceImpl;
 import com.absolom.dracarys.util.IPUtils;
 import com.absolom.dracarys.util.ServiceUtil;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -29,7 +28,9 @@ import java.util.*;
 @Component
 public class OperationLogAspect {
 
-    //本地异常日志记录对象
+    /**
+     * 本地异常日志记录对象
+     */
     private static final Logger logger = LoggerFactory.getLogger(OperationLogAspect.class);
 
     private ThreadLocal<Long> startTime = new ThreadLocal<Long>();

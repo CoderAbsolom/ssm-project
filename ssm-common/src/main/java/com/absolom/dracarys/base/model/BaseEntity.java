@@ -26,6 +26,8 @@ public class BaseEntity<T> implements Serializable {
     private Date endTime;
     private Integer limit = 10;
     private Integer start = 1;
+    private  String sidx;//排序字段名称
+    private  String order;//排序方式
 
     public String getMemo() {
         return memo;
@@ -105,5 +107,21 @@ public class BaseEntity<T> implements Serializable {
 
     public void setStart(Integer start) {
         this.start = start;
+    }
+
+    public String getSidx() {
+        return sidx;
+    }
+
+    public void setSidx(String sidx) {
+        this.sidx = sidx;
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
     }
 }
