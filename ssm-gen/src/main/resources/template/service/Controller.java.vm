@@ -1,0 +1,108 @@
+#if($level)
+	#set($levelpackage=${level}+".")
+#else
+#set($levelpackage="")
+#end
+#if($level)
+	#set($levelpath=${level}+"/")
+#else
+#set($levelpath="")
+#end
+#if($level)
+	#set($levelper=${level}+":")
+#else
+#set($levelper="")
+#end
+package ${package}.${levelpackage}controller;
+import java.util.List;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import ${package}.annotation.SysLogAnnotation;
+import ${package}.${levelpackage}model.${className};
+import ${package}.${levelpackage}service.${className}Service;
+import ${package}.utill.Constants;
+import ${package}.utill.R;
+import ${package}.utill.ServiceUtil;
+import ${package}.utils.ShiroUtils;
+import com.github.pagehelper.PageInfo;
+/**
+ * ${comments}
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+@RestController
+@RequestMapping("${levelpath}${pathName}")
+public class ${className}Controller {
+	@Autowired
+	private ${className}Service ${classname}Service;
+	
+	/**
+	 * 列表
+	 */
+	@RequestMapping("/list")
+	@RequiresPermissions("${levelper}${pathName}:list")
+	public R list(@RequestParam(value = "page", defaultValue = "1") Integer page,@RequestParam(value = "rows", defaultValue = "10") Integer rows,
+		${className} params){
+        PageInfo<${className}> pageInfo =  ${classname}Service.findPageListByWhere(page,rows,params);
+        return R.page(pageInfo.getTotal(),pageInfo.getList());
+	}
+	
+	
+	/**
+	 * 信息
+	 */
+	@RequestMapping("/info/{${pk.attrname}}")
+	@RequiresPermissions("${levelper}${pathName}:info")
+	public R info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}){
+		${className} ${classname} = ${classname}Service.findById(${pk.attrname});
+		
+		return R.ok(${classname});
+	}
+	
+	/**
+	 * 保存
+	 */
+    @SysLogAnnotation("保存${comments}")
+	@RequestMapping("/save")
+	@RequiresPermissions("${levelper}${pathName}:save")
+	public R save( ${className} ${classname}){
+        ${classname}.setCreateBy( ShiroUtils.getUserId());
+        #if(${pk.attrType}=="String")
+				${classname}.set${pk.attrName}(ServiceUtil.getidByUUID());
+		#end
+        return R.ok(${classname}Service.insert(${classname},true),"添加失败！");
+	}
+	
+	/**
+	 * 修改
+	 */
+    @SysLogAnnotation("修改${comments}")
+	@RequestMapping("/update")
+	@RequiresPermissions("${levelper}${pathName}:update")
+	public R update( ${className} ${classname}){
+        ${classname}.setEnabledFlag(Constants.ENABLED_CODE);
+        ${classname}.setUpdateBy( ShiroUtils.getUserId());
+        return R.ok(${classname}Service.update(${classname},true),"修改失败！");
+	}
+	
+	/**
+	 * 删除
+	 */
+    @SysLogAnnotation("删除${comments}")
+	@RequestMapping("/delete")
+	@RequiresPermissions("${levelper}${pathName}:delete")
+	public R delete(@RequestBody List<${pk.attrType}> ${pk.attrname}s){
+		${className} ${classname} = new ${className}();
+        ${classname}.setList(${pk.attrname}s);
+        ${classname}.setEnabledFlag(Constants.DELETE_FLAG);
+        ${classname}.setUpdateBy( ShiroUtils.getUserId());
+        return R.ok( ${classname}Service.updateBatchFlag(${classname}),"操作失败！");
+	}
+
+}

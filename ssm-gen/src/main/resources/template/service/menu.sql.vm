@@ -1,0 +1,25 @@
+
+#if($level)
+	#set($levelpath=${level}+"/")
+#else
+#set($levelpath="")
+#end
+#if($level)
+	#set($levelper=${level}+":")
+#else
+#set($levelper="")
+#end
+-- 菜单SQL
+/**
+ * 用于将功能写入角色权限体系
+ */
+INSERT INTO `sys_permission` (`PermissionID`, `ParentID`,`PermissionCode`, `PermissionType`,`PermissionName`, `url`, `Description`, `Memo`, `PermissionSN`)
+VALUES ('${keyid_1}', '1', '${className}Manager','1','${comments}', '/jsp/${levelpath}${pathName}/${pathName}.jsp', NULL, NULL , 6);
+INSERT INTO `sys_permission` (`PermissionID`, `ParentID`, `PermissionCode`,`PermissionName`, `url`, `Description`, `PermissionType`, `Memo`, `PermissionSN`)
+ VALUES ('${keyid_2}', '${keyid_1}', '${className}Select','查看', NULL, '${levelper}${pathName}:list,${level}:${pathName}:info', '2', NULL, 0);
+INSERT INTO `sys_permission` (`PermissionID`, `ParentID`, `PermissionCode`,`PermissionName`, `url`, `Description`, `PermissionType`, `Memo`, `PermissionSN`)
+ VALUES ('${keyid_3}', '${keyid_1}', '${className}Add','新增', NULL, '${levelper}${pathName}:save', '2', NULL, 0);
+INSERT INTO `sys_permission` (`PermissionID`, `ParentID`,`PermissionCode`, `PermissionName`, `url`, `Description`, `PermissionType`, `Memo`, `PermissionSN`)
+ VALUES ('${keyid_4}', '${keyid_1}', '${className}Update','修改', NULL, '${levelper}${pathName}:update', '2', NULL, 0);
+INSERT INTO `sys_permission` (`PermissionID`, `ParentID`, `PermissionCode`,`PermissionName`, `url`, `Description`, `PermissionType`, `Memo`, `PermissionSN`)
+ VALUES ('${keyid_5}', '${keyid_1}', '${className}Delete','删除', NULL, '${levelper}${pathName}:delete', '2', NULL, 0);

@@ -1,0 +1,204 @@
+#if($level)
+    #set($levelpackage=${level}+".")
+#else
+    #set($levelpackage="")
+#end
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${package}.${levelpackage}mapper.${className}Mapper">
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="${package}.${levelpackage}model.${className}" id="${classname}Map">
+#foreach($column in $columns)
+        <result property="${column.attrname}" column="${column.columnName}"/>
+#end
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		#foreach($column in $columns)
+		 $column.columnName#if($velocityCount!=$columns.size()),#end
+		#end
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="${classname}Map" parameterType="${pk.attrType}" >
+        select
+        <include refid="Base_Column_List" />
+        from ${tableName}
+        where ${pk.columnName} = #{${pk.attrname}}
+        #foreach($column in $columns)
+            #if($column.columnName =='EnabledFlag')
+                AND EnabledFlag='0'
+            #end
+        #end
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="${pk.attrType}" >
+        delete from  ${tableName}
+        where${pk.columnName}  = #{${pk.attrname}}
+    </delete>
+
+	<!--保存-->
+    <insert id="insert" parameterType="${package}.${levelpackage}model.${className}"#if($pk.extra == 'auto_increment') useGeneratedKeys="true" keyProperty="$pk.attrname"#end>
+        insert into ${tableName}
+        (#foreach($column in $columns)
+			#if($column.columnName != $pk.columnName || $pk.extra != 'auto_increment')
+           `$column.columnName`#if($velocityCount != $columns.size()),#end
+			#end
+		#end
+        )
+        values
+        (#foreach($column in $columns)
+			#if($column.columnName != $pk.columnName || $pk.extra != 'auto_increment')
+        #{$column.attrname}#if($velocityCount != $columns.size()), #end
+		   #end
+		#end
+        )
+    </insert>
+
+    <insert id="insertSelective" parameterType="${package}.${levelpackage}model.${className}"#if($pk.extra == 'auto_increment') useGeneratedKeys="true" keyProperty="$pk.attrname"#end>
+        insert into ${tableName}
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+			#foreach($column in $columns)#if($column.columnName != $pk.columnName || $pk.extra != 'auto_increment')
+                    <if test="${column.attrname} != null" >
+						$column.columnName,
+                    </if>
+				#end
+			#end
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+			#foreach($column in $columns)
+				#if($column.columnName != $pk.columnName || $pk.extra != 'auto_increment')
+              <if test="${column.attrname} != null" >
+                        #{$column.attrname},
+                    </if>
+				#end
+			#end
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="${package}.${levelpackage}model.${className}" >
+        update ${tableName}
+        <set>
+			#foreach($column in $columns)
+                #if($column.columnName != $pk.columnName&&($column.columnName !='CreateDate'&&$column.columnName !='CreateBy'))
+                    <if test="$column.attrname != null">`$column.columnName` = #{$column.attrname}#if($velocityCount != $columns.size()), #end</if>
+				#end
+			#end
+        </set>
+        where ${pk.columnName} = #{${pk.attrname}}
+    </update>
+
+
+    <update id="updateByPrimaryKey"  parameterType="${package}.${levelpackage}model.${className}" >
+        update ${tableName} SET
+		#foreach($column in $columns)
+			#if($column.columnName != $pk.columnName&&($column.columnName !='CreateDate'&&$column.columnName !='CreateBy'))
+              `$column.columnName` = #{$column.attrname}#if($velocityCount != $columns.size()), #end
+			#end
+		#end
+           where ${pk.columnName} = #{${pk.attrname}}
+    </update>
+
+    <insert id="insertList" parameterType="java.util.List">
+        insert into  ${tableName}
+        (
+		#foreach($column in $columns)
+			#if($column.columnName != $pk.columnName || $pk.extra != 'auto_increment')
+                `$column.columnName`#if($velocityCount != $columns.size()), #end
+
+			#end
+		#end
+        )
+        values
+    <foreach collection="list" item="item" separator=",">
+        (#foreach($column in $columns)
+            #if($column.columnName != $pk.columnName || $pk.extra != 'auto_increment')
+                #{item.$column.attrname}#if($velocityCount != $columns.size()), #end
+			#end
+		#end)
+    </foreach>
+    </insert>
+
+    <delete id="deleteBatch"  parameterType="java.util.List">
+        delete from  ${tableName}
+        where ${pk.columnName} IN
+        <foreach collection="list" item="item" close=")" separator="," open="(">
+            #{item.$pk.attrname}
+        </foreach>
+    </delete>
+
+    <update id="updateBatchFlag"  parameterType="${package}.${levelpackage}model.${className}">
+        UPDATE   ${tableName}
+        SET  EnabledFlag = #{enabledFlag},
+        UpdateBy = #{updateBy,jdbcType=VARCHAR},
+        UpdateDate = #{updateDate,jdbcType=TIMESTAMP}
+        where ${pk.columnName} IN
+        <foreach collection="list" item="item" close=")" separator="," open="(">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="queryList" parameterType="${package}.${levelpackage}model.${className}" resultMap="${classname}Map">
+        SELECT  *  FROM   ${tableName}
+        <where>
+			#foreach($column in $columns)
+                #if($column.columnName =='EnabledFlag')
+                    AND  EnabledFlag='0'
+                #end
+				#if($column.columnName.indexOf("Name")>0)
+                    <if test="$column.attrname != null and $column.attrname.trim() != ''">
+                        and `$column.columnName` like concat('%',#{$column.attrname},'%')
+                    </if>
+				#end
+				#if($column.columnName.indexOf("ID")>0)
+                    <if test="$column.attrname != null and $column.attrname.trim() != ''">
+                        and `$column.columnName` = #{$column.attrname}
+                    </if>
+				#end
+				#if($column.columnName.indexOf("Type")>0)
+                    <if test="$column.attrname != null and $column.attrname.trim() != ''">
+                        and `$column.columnName` = #{$column.attrname}
+                    </if>
+				#end
+			#end
+        </where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by CreateDate DESC
+            </otherwise>
+        </choose>
+
+    </select>
+    <select id="queryTotal"  parameterType="${package}.${levelpackage}model.${className}"  resultType="java.lang.Integer">
+        SELECT  COUNT(1)  FROM   ${tableName}
+        <where>
+            #foreach($column in $columns)
+                #if($column.columnName =='EnabledFlag')
+                    AND  EnabledFlag='0'
+                #end
+                #if($column.columnName.indexOf("Name")>0)
+                    <if test="$column.attrname != null and $column.attrname.trim() != ''">
+                        and `$column.columnName` like concat('%',#{$column.attrname},'%')
+                    </if>
+                #end
+                #if($column.columnName.indexOf("ID")>0)
+                    <if test="$column.attrname != null and $column.attrname.trim() != ''">
+                        and `$column.columnName` = #{$column.attrname}
+                    </if>
+                #end
+                #if($column.columnName.indexOf("Type")>0)
+                    <if test="$column.attrname != null and $column.attrname.trim() != ''">
+                        and `$column.columnName` = #{$column.attrname}
+                    </if>
+                #end
+            #end
+
+        </where>
+
+    </select>
+
+
+</mapper>

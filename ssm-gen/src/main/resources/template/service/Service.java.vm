@@ -1,0 +1,18 @@
+#if($level)
+package ${package}.${levelpackage}service;
+import ${package}.${levelpackage}model.${className};
+import ${package}.service.BaseService;
+#else
+package ${package}.service;
+import ${package}.model.${className};
+#end
+/**
+ * ${comments}
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+public interface ${className}Service  extends BaseService< ${className}> {
+	
+
+}
