@@ -26,17 +26,32 @@ public class MyBatisRedisCache implements Cache {
 
     private static JedisConnectionFactory jedisConnectionFactory;
 
-    private final String id;
+    private static MyBatisRedisCache instance;
 
     public static void setJedisConnectionFactory(JedisConnectionFactory jedisConnectionFactory){
         MyBatisRedisCache.jedisConnectionFactory = jedisConnectionFactory;
     }
 
+    /**
+     * 这个方法用于主动进行缓存操作，虽然我知道这样写可能不是很好
+     * @param id
+     * @return
+     */
+    public static synchronized MyBatisRedisCache getInstance(final String id){
+        if(null == instance){
+            instance = new MyBatisRedisCache(id);
+        }
+        return instance;
+    }
+
+    private final String id;
+
+
     public MyBatisRedisCache (final String id) {
         if (null == id) {
-            throw new IllegalArgumentException("Cache instance require an ID");
+            throw new IllegalArgumentException("================================Cache instance require an ID");
         }
-        LOGGER.info("Redis Cache id " + id);
+        LOGGER.info("================================Redis Cache id " + id);
         this.id = id;
     }
 
@@ -47,12 +62,13 @@ public class MyBatisRedisCache implements Cache {
 
     @Override
     public void putObject(Object key, Object value) {
+
         JedisConnection connection = null;
         try {
             connection = jedisConnectionFactory.getConnection();
             RedisSerializer<Object> serializer = new JdkSerializationRedisSerializer();
             connection.set(serializer.serialize(key), serializer.serialize(value));
-            LOGGER.error("================================缓存放入 key:" + key + " value:" + value);
+            LOGGER.error("================================缓存放入 id:" + id +" key:" + key + " value:" + value);
         }
         catch (JedisConnectionException e) {
             e.printStackTrace();
@@ -72,7 +88,7 @@ public class MyBatisRedisCache implements Cache {
             connection = jedisConnectionFactory.getConnection();
             RedisSerializer<Object> serializer = new JdkSerializationRedisSerializer();
             result = serializer.deserialize(connection.get(serializer.serialize(key)));
-            LOGGER.error("================================缓存取出：" + result);
+            LOGGER.error("================================缓存取出 id:" + id +" key:" + key + " value:" + result);
         }catch (Exception e){
             e.printStackTrace();
         }finally {
@@ -91,7 +107,7 @@ public class MyBatisRedisCache implements Cache {
             connection = jedisConnectionFactory.getConnection();
             RedisSerializer<Object> serializer = new JdkSerializationRedisSerializer();
             result =connection.expire(serializer.serialize(key), 0);
-            LOGGER.error("================================移除缓存 key:" + key);
+            LOGGER.error("================================移除缓存： id:" + id +" key:" + key);
         }
         catch (JedisConnectionException e) {
             e.printStackTrace();
@@ -111,6 +127,7 @@ public class MyBatisRedisCache implements Cache {
             connection = jedisConnectionFactory.getConnection();
             connection.flushDb();
             connection.flushAll();
+            LOGGER.error("================================释放缓存： id:" + id);
         }catch (Exception e){
             e.printStackTrace();
         }finally {
