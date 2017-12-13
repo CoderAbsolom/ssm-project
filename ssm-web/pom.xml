@@ -16,6 +16,26 @@
             <groupId>com.absolom.dracarys</groupId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <artifactId>ssm-upload</artifactId>
+            <groupId>com.absolom.dracarys</groupId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <artifactId>ssm-gen</artifactId>
+            <groupId>com.absolom.dracarys</groupId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <artifactId>ssm-shiro</artifactId>
+            <groupId>com.absolom.dracarys</groupId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <artifactId>ssm-api</artifactId>
+            <groupId>com.absolom.dracarys</groupId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>ssm-web</finalName>

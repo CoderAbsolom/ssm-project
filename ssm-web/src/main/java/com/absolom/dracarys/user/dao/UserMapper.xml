@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.absolom.dracarys.user.dao.UserMapper">
+<mapper namespace="com.absolom.dracarys.user.dao.SysUserMapper">
     <!-- Redis二级缓存 -->
     <cache type="com.absolom.dracarys.cache.MyBatisRedisCache"/>
-    <resultMap id="BaseResultMap" type="com.absolom.dracarys.user.model.User">
+    <resultMap id="BaseResultMap" type="com.absolom.dracarys.user.model.SysUser">
         <id column="UserID" property="userID" jdbcType="VARCHAR"/>
         <result column="LoginName" property="loginName" jdbcType="VARCHAR"/>
         <result column="OrgCode" property="orgCode" jdbcType="VARCHAR"/>
@@ -32,7 +32,7 @@
         delete from sys_user
         where UserID = #{userID,jdbcType=VARCHAR}
     </delete>
-    <insert id="insert" parameterType="com.absolom.dracarys.user.model.User">
+    <insert id="insert" parameterType="com.absolom.dracarys.user.model.SysUser">
         insert into sys_user (UserID, LoginName, OrgCode,
         Password, LoginIP, UserType,
         Memo, UserName, CreateBy,
@@ -44,7 +44,7 @@
         #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP},
         #{enabledFlag,jdbcType=VARCHAR})
     </insert>
-    <insert id="insertSelective" parameterType="com.absolom.dracarys.user.model.User">
+    <insert id="insertSelective" parameterType="com.absolom.dracarys.user.model.SysUser">
         insert into sys_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="userID != null">
@@ -129,7 +129,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.absolom.dracarys.user.model.User">
+    <update id="updateByPrimaryKeySelective" parameterType="com.absolom.dracarys.user.model.SysUser">
         update sys_user
         <set>
             <if test="loginName != null">
@@ -171,7 +171,7 @@
         </set>
         where UserID = #{userID,jdbcType=VARCHAR}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.absolom.dracarys.user.model.User">
+    <update id="updateByPrimaryKey" parameterType="com.absolom.dracarys.user.model.SysUser">
         update sys_user
         set LoginName = #{loginName,jdbcType=VARCHAR},
         OrgCode = #{orgCode,jdbcType=VARCHAR},
@@ -187,7 +187,7 @@
         EnabledFlag = #{enabledFlag,jdbcType=VARCHAR}
         where UserID = #{userID,jdbcType=VARCHAR}
     </update>
-    <select id="queryList" parameterType="com.absolom.dracarys.user.model.User" resultMap="BaseResultMap">
+    <select id="queryList" parameterType="com.absolom.dracarys.user.model.SysUser" resultMap="BaseResultMap">
         SELECT * FROM sys_user
         <where>
             <if test="loginName != null and loginName.trim() != ''">

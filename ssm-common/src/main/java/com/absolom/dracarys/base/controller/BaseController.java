@@ -4,6 +4,7 @@ package com.absolom.dracarys.base.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +27,12 @@ public class BaseController<T> {
 
     private HttpSession session;
 
+    private int page = 1;
+
+    private int rows = 10;
+
+    private String currentUser;
+
     protected Logger logger;
 
     @SuppressWarnings("unchecked")
@@ -35,10 +42,24 @@ public class BaseController<T> {
         logger = LoggerFactory.getLogger(cls);
     }
 
+    @ModelAttribute
     public void setRequestAndResponse(HttpServletRequest request, HttpServletResponse response) {
         this.request = request;
         this.response = response;
         this.session = request.getSession();
+        String rows = request.getParameter("rows");
+        String page = request.getParameter("page");
+        String currentUser = request.getParameter("currentuser");
+        if(null != rows && null != page){
+            this.rows = Integer.valueOf(rows);
+            this.page = Integer.valueOf(page);
+        }else{
+            this.rows = 10;
+            this.page = 1;
+        }
+        if(null != currentUser){
+            this.currentUser = currentUser;
+        }
     }
 
     protected String getRealPath() {
@@ -67,5 +88,29 @@ public class BaseController<T> {
 
     public void setSession(HttpSession session) {
         this.session = session;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public void setRows(int rows) {
+        this.rows = rows;
+    }
+
+    public String getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(String currentUser) {
+        this.currentUser = currentUser;
     }
 }

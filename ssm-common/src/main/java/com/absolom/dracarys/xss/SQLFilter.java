@@ -3,9 +3,6 @@ package com.absolom.dracarys.xss;
 import com.absolom.dracarys.util.RRException;
 import org.apache.commons.lang.StringUtils;
 
-import java.util.Arrays;
-import java.util.stream.Stream;
-
 /**
  * @Title: SQLFilter
  * @Description: SQL过滤
