@@ -11,7 +11,7 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
 
 /**
  * Redis缓存操作基础类
- * @author zhepa
+ * @author zhepan@outlook.com
  * @create 2017-12-14 15:30
  */
 public abstract class BaseRedisUtil {

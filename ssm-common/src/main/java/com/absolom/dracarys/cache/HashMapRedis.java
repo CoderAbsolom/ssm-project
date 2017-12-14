@@ -4,7 +4,7 @@ import org.springframework.data.redis.connection.jedis.JedisConnection;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
 /**
- * @author zhepa
+ * @author zhepan@outlook.com
  * @create 2017-12-14 15:33
  */
 public class HashMapRedis extends BaseRedisUtil {

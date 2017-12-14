@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * 用Redis作为持久层二级缓存
- * @author zhepa
+ * @author zhepan@outlook.com
  * @create 2017-12-11 14:00
  */
 public class MyBatisRedisCache implements Cache {

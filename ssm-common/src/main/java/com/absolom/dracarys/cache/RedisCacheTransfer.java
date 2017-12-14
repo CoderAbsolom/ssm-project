@@ -5,7 +5,7 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.stereotype.Component;
 
 /**
- * @author zhepa
+ * @author zhepan@outlook.com
  * @create 2017-12-11 16:40
  */
 @Component
