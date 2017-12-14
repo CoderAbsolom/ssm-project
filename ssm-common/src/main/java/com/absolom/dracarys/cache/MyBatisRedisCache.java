@@ -1,13 +1,6 @@
 package com.absolom.dracarys.cache;
 
 import org.apache.ibatis.cache.Cache;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.redis.connection.jedis.JedisConnection;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializer;
-import redis.clients.jedis.exceptions.JedisConnectionException;
 
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -20,38 +13,16 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public class MyBatisRedisCache implements Cache {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MyBatisRedisCache .class);
-
     private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
-    private static JedisConnectionFactory jedisConnectionFactory;
-
-    private static MyBatisRedisCache instance;
-
-    public static void setJedisConnectionFactory(JedisConnectionFactory jedisConnectionFactory){
-        MyBatisRedisCache.jedisConnectionFactory = jedisConnectionFactory;
-    }
-
-    /**
-     * 这个方法用于主动进行缓存操作，虽然我知道这样写可能不是很好
-     * @param id
-     * @return
-     */
-    public static synchronized MyBatisRedisCache getInstance(final String id){
-        if(null == instance){
-            instance = new MyBatisRedisCache(id);
-        }
-        return instance;
-    }
+    private final BaseRedisUtil redisUtil = new HashMapRedis();
 
     private final String id;
-
 
     public MyBatisRedisCache (final String id) {
         if (null == id) {
             throw new IllegalArgumentException("================================Cache instance require an ID");
         }
-        LOGGER.info("================================Redis Cache id " + id);
         this.id = id;
     }
 
@@ -62,98 +33,27 @@ public class MyBatisRedisCache implements Cache {
 
     @Override
     public void putObject(Object key, Object value) {
-
-        JedisConnection connection = null;
-        try {
-            connection = jedisConnectionFactory.getConnection();
-            RedisSerializer<Object> serializer = new JdkSerializationRedisSerializer();
-            connection.set(serializer.serialize(key), serializer.serialize(value));
-            LOGGER.error("================================缓存放入 id:" + id +" key:" + key + " value:" + value);
-        }
-        catch (JedisConnectionException e) {
-            e.printStackTrace();
-        }
-        finally {
-            if (null != connection) {
-                connection.close();
-            }
-        }
+        redisUtil.putObject(id,key,value);
     }
 
     @Override
     public Object getObject(Object key) {
-        Object result = null;
-        JedisConnection connection = null;
-        try {
-            connection = jedisConnectionFactory.getConnection();
-            RedisSerializer<Object> serializer = new JdkSerializationRedisSerializer();
-            result = serializer.deserialize(connection.get(serializer.serialize(key)));
-            LOGGER.error("================================缓存取出 id:" + id +" key:" + key + " value:" + result);
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            if (null != connection) {
-                connection.close();
-            }
-        }
-        return result;
+        return redisUtil.getObject(id,key);
     }
 
     @Override
     public Object removeObject(Object key) {
-        Object result = null;
-        JedisConnection connection = null;
-        try {
-            connection = jedisConnectionFactory.getConnection();
-            RedisSerializer<Object> serializer = new JdkSerializationRedisSerializer();
-            result =connection.expire(serializer.serialize(key), 0);
-            LOGGER.error("================================移除缓存： id:" + id +" key:" + key);
-        }
-        catch (JedisConnectionException e) {
-            e.printStackTrace();
-        }
-        finally {
-            if (null != connection) {
-                connection.close();
-            }
-        }
-        return result;
+        return null;
     }
 
     @Override
     public void clear() {
-        JedisConnection connection = null;
-        try {
-            connection = jedisConnectionFactory.getConnection();
-            connection.flushDb();
-            connection.flushAll();
-            LOGGER.error("================================释放缓存： id:" + id);
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            if (null != connection) {
-                connection.close();
-            }
-        }
+        redisUtil.removeByKey(id);
     }
 
     @Override
     public int getSize() {
-        int result = 0;
-        JedisConnection connection = null;
-        try {
-            connection = jedisConnectionFactory.getConnection();
-            result = Integer.valueOf(connection.dbSize().toString());
-        }
-        catch (JedisConnectionException e) {
-            e.printStackTrace();
-        }
-        finally {
-            if (null != connection) {
-                connection.close();
-            }
-        }
-        return result;
+        return redisUtil.getSize();
     }
 
     @Override

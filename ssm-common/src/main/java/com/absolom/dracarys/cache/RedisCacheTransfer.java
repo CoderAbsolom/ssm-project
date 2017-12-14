@@ -13,6 +13,6 @@ public class RedisCacheTransfer {
 
     @Autowired
     public void setJedisConnectionFactory(JedisConnectionFactory jedisConnectionFactory) {
-        MyBatisRedisCache.setJedisConnectionFactory(jedisConnectionFactory);
+        BaseRedisUtil.setFactory(jedisConnectionFactory);
     }
 }

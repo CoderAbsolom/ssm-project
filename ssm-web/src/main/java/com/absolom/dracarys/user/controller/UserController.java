@@ -54,14 +54,14 @@ public class UserController extends BaseController<UserController> {
     @SysLogAnnotation("放入缓存")
     @RequestMapping("/setCache")
     public R getCache(String key,String value) {
-        MyBatisRedisCache.getInstance(key).putObject(key,value);
+
         return R.ok("================================缓存放入 key:" + key + " value:" + value);
     }
 
     @SysLogAnnotation("提取缓存")
     @RequestMapping("/getCache")
     public R getCache(String key) {
-        return R.ok("================================缓存取出 key:" + key + " value:" + JSON.toJSONString(MyBatisRedisCache.getInstance(key).getObject(key)));
+        return R.ok("================================缓存取出 key:" + key + " value:" );
     }
 
 
