@@ -26,7 +26,7 @@ public abstract class BaseRedisUtil {
 
     public abstract Object getObject(Object key, Object field);
 
-    public Object removeMap(Object key, Object field){
+    public Object remove(Object key, Object field){
         Object result = null;
         JedisConnection connection = null;
         try {
@@ -45,7 +45,7 @@ public abstract class BaseRedisUtil {
         return result;
     }
 
-    public Object removeByKey(Object key){
+    public Object remove(Object key){
         Object result = null;
         JedisConnection connection = null;
         try {

@@ -5,7 +5,7 @@
 #end
 package ${package}.${levelpackage}mapper;
 import ${package}.${levelpackage}model.${className};
-import ${package}.mapper.BaseDao;
+import ${package}..base.dao.BaseDao;
 import ${package}.annotation.MyBatisDao;
 /**
  * ${comments}

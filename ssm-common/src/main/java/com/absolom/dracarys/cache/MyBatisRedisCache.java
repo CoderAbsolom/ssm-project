@@ -48,7 +48,7 @@ public class MyBatisRedisCache implements Cache {
 
     @Override
     public void clear() {
-        redisUtil.removeByKey(id);
+        redisUtil.remove(id);
     }
 
     @Override

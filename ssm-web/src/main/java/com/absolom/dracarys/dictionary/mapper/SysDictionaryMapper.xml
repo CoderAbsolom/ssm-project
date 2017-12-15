@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.absolom.dracarys.dictionary.mapper.SysDictionaryMapper">
+    <resultMap type="com.absolom.dracarys.dictionary.model.SysDictionary" id="sysDictionaryMap">
+        <result property="id" column="ID"/>
+        <result property="parentID" column="ParentID"/>
+        <result property="code" column="Code"/>
+        <result property="name" column="Name"/>
+        <result property="type" column="Type"/>
+        <result property="value" column="Value"/>
+        <result property="sort" column="Sort"/>
+        <result property="memo" column="Memo"/>
+        <result property="enabledFlag" column="EnabledFlag"/>
+        <result property="createBy" column="CreateBy"/>
+        <result property="createDate" column="CreateDate"/>
+        <result property="updateBy" column="UpdateBy"/>
+        <result property="updateDate" column="UpdateDate"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+				 ID,				 ParentID,				 Code,				 Name,				 Type,				 Value,				 Sort,				 Memo,				 EnabledFlag,				 CreateBy,				 CreateDate,				 UpdateBy,				 UpdateDate		    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="sysDictionaryMap" parameterType="String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_dictionary
+        where ID = #{id}
+        AND EnabledFlag='0'
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="String">
+        delete from  sys_dictionary
+        whereID  = #{id}
+    </delete>
+
+    <!--保存-->
+    <insert id="insert" parameterType="com.absolom.dracarys.dictionary.model.SysDictionary">
+        insert into sys_dictionary
+        (			           `ID`,								           `ParentID`,								           `Code`,								           `Name`,								           `Type`,								           `Value`,								           `Sort`,								           `Memo`,								           `EnabledFlag`,								           `CreateBy`,								           `CreateDate`,								           `UpdateBy`,								           `UpdateDate`					        )
+        values
+        (			        #{id}, 		   					        #{parentID}, 		   					        #{code}, 		   					        #{name}, 		   					        #{type}, 		   					        #{value}, 		   					        #{sort}, 		   					        #{memo}, 		   					        #{enabledFlag}, 		   					        #{createBy}, 		   					        #{createDate}, 		   					        #{updateBy}, 		   					        #{updateDate}		   		        )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.absolom.dracarys.dictionary.model.SysDictionary">
+        insert into sys_dictionary
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="parentID != null">
+                ParentID,
+            </if>
+            <if test="code != null">
+                Code,
+            </if>
+            <if test="name != null">
+                Name,
+            </if>
+            <if test="type != null">
+                Type,
+            </if>
+            <if test="value != null">
+                Value,
+            </if>
+            <if test="sort != null">
+                Sort,
+            </if>
+            <if test="memo != null">
+                Memo,
+            </if>
+            <if test="enabledFlag != null">
+                EnabledFlag,
+            </if>
+            <if test="createBy != null">
+                CreateBy,
+            </if>
+            <if test="createDate != null">
+                CreateDate,
+            </if>
+            <if test="updateBy != null">
+                UpdateBy,
+            </if>
+            <if test="updateDate != null">
+                UpdateDate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="parentID != null">
+                #{parentID},
+            </if>
+            <if test="code != null">
+                #{code},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="type != null">
+                #{type},
+            </if>
+            <if test="value != null">
+                #{value},
+            </if>
+            <if test="sort != null">
+                #{sort},
+            </if>
+            <if test="memo != null">
+                #{memo},
+            </if>
+            <if test="enabledFlag != null">
+                #{enabledFlag},
+            </if>
+            <if test="createBy != null">
+                #{createBy},
+            </if>
+            <if test="createDate != null">
+                #{createDate},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.absolom.dracarys.dictionary.model.SysDictionary">
+        update sys_dictionary
+        <set>
+            <if test="parentID != null">`ParentID` = #{parentID},</if>
+            <if test="code != null">`Code` = #{code},</if>
+            <if test="name != null">`Name` = #{name},</if>
+            <if test="type != null">`Type` = #{type},</if>
+            <if test="value != null">`Value` = #{value},</if>
+            <if test="sort != null">`Sort` = #{sort},</if>
+            <if test="memo != null">`Memo` = #{memo},</if>
+            <if test="enabledFlag != null">`EnabledFlag` = #{enabledFlag},</if>
+            <if test="updateBy != null">`UpdateBy` = #{updateBy},</if>
+            <if test="updateDate != null">`UpdateDate` = #{updateDate}</if>
+        </set>
+        where ID = #{id}
+    </update>
+
+
+    <update id="updateByPrimaryKey" parameterType="com.absolom.dracarys.dictionary.model.SysDictionary">
+        update sys_dictionary SET
+										              `ParentID` = #{parentID}, 								              `Code` = #{code}, 								              `Name` = #{name}, 								              `Type` = #{type}, 								              `Value` = #{value}, 								              `Sort` = #{sort}, 								              `Memo` = #{memo}, 								              `EnabledFlag` = #{enabledFlag}, 																		              `UpdateBy` = #{updateBy}, 								              `UpdateDate` = #{updateDate}					           where ID = #{id}
+    </update>
+
+    <insert id="insertList" parameterType="java.util.List">
+        insert into sys_dictionary
+        (
+        `ID`,
+        `ParentID`,
+        `Code`,
+        `Name`,
+        `Type`,
+        `Value`,
+        `Sort`,
+        `Memo`,
+        `EnabledFlag`,
+        `CreateBy`,
+        `CreateDate`,
+        `UpdateBy`,
+        `UpdateDate`
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            ( #{item.id}, #{item.parentID}, #{item.code}, #{item.name}, #{item.type}, #{item.value}, #{item.sort},
+            #{item.memo}, #{item.enabledFlag}, #{item.createBy}, #{item.createDate}, #{item.updateBy},
+            #{item.updateDate} )
+        </foreach>
+    </insert>
+
+    <delete id="deleteBatch" parameterType="java.util.List">
+        delete from sys_dictionary
+        where ID IN
+        <foreach collection="list" item="item" close=")" separator="," open="(">
+            #{item.id}
+        </foreach>
+    </delete>
+
+    <update id="updateBatchFlag" parameterType="com.absolom.dracarys.dictionary.model.SysDictionary">
+        UPDATE sys_dictionary
+        SET EnabledFlag = #{enabledFlag},
+        UpdateBy = #{updateBy,jdbcType=VARCHAR},
+        UpdateDate = #{updateDate,jdbcType=TIMESTAMP}
+        where ID IN
+        <foreach collection="list" item="item" close=")" separator="," open="(">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="queryList" parameterType="com.absolom.dracarys.dictionary.model.SysDictionary"
+            resultMap="sysDictionaryMap">
+        SELECT * FROM sys_dictionary
+        <where>
+            <if test="parentID != null and parentID != ''">
+                and `ParentID` = #{parentID}
+            </if>
+            <if test="code != null and code != ''">
+                and `Code` = #{code}
+            </if>
+            AND EnabledFlag='0'
+        </where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by CreateDate DESC
+            </otherwise>
+        </choose>
+
+    </select>
+
+    <select id="queryTotal" parameterType="com.absolom.dracarys.dictionary.model.SysDictionary"
+            resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM sys_dictionary
+        <where>
+            <if test="parentID != null and parentID != ''">
+                and `ParentID` = #{parentID}
+            </if>
+            AND EnabledFlag='0'
+        </where>
+    </select>
+
+    <select id="queryChildDictionary" resultMap="sysDictionaryMap">
+        SELECT * FROM sys_dictionary
+        <where>
+            EnabledFlag='0'
+            AND ParentID != '0'
+        </where>
+        ORDER BY ParentID,Sort
+    </select>
+
+</mapper>
